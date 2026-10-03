@@ -1,4 +1,3 @@
-
 name: Build PMT Android APK
 
 on:
@@ -9,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -21,13 +20,17 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
       - name: Build APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        working-directory: PMT_Android_App_Configured (3)
+        run: gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: PMT-Material-Management
-          path: app/build/outputs/apk/debug/*.apk
+          name: PMT-Material-Management-APK
+          path: PMT_Android_App_Configured (3)/app/build/outputs/apk/debug/*.apk
